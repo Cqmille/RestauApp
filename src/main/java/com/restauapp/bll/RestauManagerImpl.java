@@ -3,13 +3,20 @@ package com.restauapp.bll;
 import com.restauapp.badcontentcomponent.BadContentDetector;
 import com.restauapp.bo.Article;
 import com.restauapp.bo.Carte;
+import com.restauapp.bo.Commande;
+import com.restauapp.bo.Type;
 import com.restauapp.dal.ArticleDAO;
 import com.restauapp.dal.CarteDAO;
+import com.restauapp.dal.CommandeDAO;
+import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class RestauManagerImpl implements RestauManager {
@@ -19,6 +26,9 @@ public class RestauManagerImpl implements RestauManager {
 
     @Autowired
     CarteDAO carteDAO;
+
+    @Autowired
+    CommandeDAO commandeDAO;
 
     @Autowired
     private BadContentDetector badContentDetector;
@@ -33,15 +43,17 @@ public class RestauManagerImpl implements RestauManager {
         a.setDescription(description);
 
         articleDAO.save(a);
-        System.out.println("+1 Article saved");
+        System.out.println("Enregistré | " + a);
     }
+
     @Override
     @Transactional
     public List<Article> getArticlesWithMaxPrice(Double d) {
         List<Article> articles = getAllArticles();
-        for (Article article : articles) {
+        for (int i = articles.size() - 1; i >= 0; i--) {
+            Article article = articles.get(i);
             if (article.getPrix() > d) {
-                articles.remove(article);
+                articles.remove(i);
             }
         }
         return articles;
@@ -56,7 +68,7 @@ public class RestauManagerImpl implements RestauManager {
     @Transactional
     public void addCarte(Carte c) {
         carteDAO.save(c);
-        System.out.println("+1 Carte saved");
+        System.out.println("Enregistré | " + c);
     }
 
     @Override
@@ -68,7 +80,7 @@ public class RestauManagerImpl implements RestauManager {
         // Check if the article already exists in the carte
         for (Article existingArticle : existingArticles) {
             if (existingArticle.getId().equals(a.getId())) {
-                throw new BllException("Article already exists in the carte.");
+                throw new BllException("L'Article existe déjà dans la carte.");
             }
         }
 
@@ -78,7 +90,7 @@ public class RestauManagerImpl implements RestauManager {
         // Check if an article with the same name already exists in another carte
         for (Article article : allArticles) {
             if (article.getIntitule().equals(a.getIntitule()) && article.getCarte() != null) {
-                throw new BllException("Article with the same name already exists in another carte.");
+                throw new BllException("L'article est associé à une autre carte.");
             }
         }
 
@@ -102,4 +114,54 @@ public class RestauManagerImpl implements RestauManager {
     public List<Article> getArticlesFromCarte(Carte c) {
         return c.getArticles();
     }
+
+    @Override
+    public Carte getCarteByType(Type type) {
+        List<Carte> cartes = getAllCartes();
+        for (Carte carte : cartes) {
+            if (carte.getType() == type) {
+                return carte;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Article getArticleByIntitule(String i) {
+        List<Article> articles = getAllArticles();
+
+        for (Article article : articles) {
+            if (article.getIntitule().equals(i)) {
+                return article;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public void addCommande(List<Article> articlesRandom, int numTable) throws BllException {
+        Commande c = new Commande();
+
+        // Fill in the information for the Commande object
+        c.setDateCommande(new Date());
+        c.setNumCommande(UUID.randomUUID().toString());
+        c.setNumTable(Integer.toString(numTable));
+        c.setArticles(articlesRandom);
+
+        // Calculate the total price of the articles
+        double total = 0;
+        for (Article a : articlesRandom) {
+            total += a.getPrix();
+        }
+        c.setMontantTotal(total);
+
+        // Save the Commande object to the database
+        commandeDAO.save(c);
+    }
+
+    public List<Carte> getAllCartes() {
+        return (List<Carte>) carteDAO.findAll();
+    }
+
 }

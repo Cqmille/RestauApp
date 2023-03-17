@@ -28,12 +28,12 @@ public class Carte {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @OneToMany(mappedBy = "carte", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "carte", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Article> articles = new ArrayList<>();
 
     @Override
     public String toString() {
-        return " | " +
+        return "Carte{" +
                 "id=" + id +
                 ", titre='" + titre + '\'' +
                 ", descriptif='" + descriptif + '\'' +

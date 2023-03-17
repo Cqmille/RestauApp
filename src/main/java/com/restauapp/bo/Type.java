@@ -1,5 +1,5 @@
 package com.restauapp.bo;
 
 public enum Type {
-    PLAT_ET_BOISSON, VINS, DESSERTS;
+    PLATS_ET_BOISSONS, VINS, DESSERTS;
 }

@@ -5,12 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "article")
-public class Article {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "article_type")
+@Data
+public abstract class Article {
 
     @Id
     @GeneratedValue
@@ -31,5 +30,16 @@ public class Article {
     public Long getIdArticle() {
         return this.id;
     }
+    public double getPrix() {return this.prix; }
 
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", intitule='" + intitule + '\'' +
+                ", description='" + description + '\'' +
+                ", prix=" + prix +
+                ", carte=" + carte +
+                '}';
+    }
 }
