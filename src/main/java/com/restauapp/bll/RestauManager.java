@@ -7,20 +7,28 @@ import com.restauapp.bo.Type;
 import java.util.List;
 
 public interface RestauManager {
-    // Article
-    public void addArticle(Article a) throws BllException;
-    public List<Article> getArticlesWithMaxPrice(Double d);
-    public List<Article> getAllArticles();
 
+    // Article
+    void addArticle(Article a) throws BllException;
+
+    List<Article> getArticlesWithMaxPrice(Double d);
+
+    List<Article> getAllArticles();
+
+    Article getArticleByIntitule(String i);
+
+    Article getArticleById(Long id);
 
     // Carte
-    public void addCarte(Carte a);
-    public void addArticleToCarte(Article a, Carte c) throws BllException;
-    public List<Article> getArticlesFromCarte(Carte c);
+    void addCarte(Carte a) throws BllException;
 
-    Carte getCarteByType(Type platsEtBoissons);
+    List<Carte> getAllCartes();
 
-    Article getArticleByIntitule(String coca);
+    Carte getCarteByType(Type t);
 
-    void addCommande(List<Article> articlesRandom, int numTable) throws BllException;
+    void addArticleToCarte(Article a, Carte c) throws BllException;
+
+    // Commande
+    void addCommande(List<Article> articles, int numTable) throws BllException;
+
 }

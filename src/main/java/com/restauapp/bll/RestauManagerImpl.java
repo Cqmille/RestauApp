@@ -1,21 +1,18 @@
 package com.restauapp.bll;
 
-import com.restauapp.badcontentcomponent.BadContentDetector;
-import com.restauapp.bo.Article;
-import com.restauapp.bo.Carte;
-import com.restauapp.bo.Commande;
-import com.restauapp.bo.Type;
+import com.restauapp.bo.*;
 import com.restauapp.dal.ArticleDAO;
 import com.restauapp.dal.CarteDAO;
 import com.restauapp.dal.CommandeDAO;
-import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import com.restauapp.badcontentcomponent.BadContentDetector;
+
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -33,12 +30,17 @@ public class RestauManagerImpl implements RestauManager {
     @Autowired
     private BadContentDetector badContentDetector;
 
+    // ---------------------
+    // Méthodes pour Article
+    // ---------------------
+
     @Override
     @Transactional
     public void addArticle(Article a) throws BllException {
-        // Check for bad content
+        // Modération contenu
         String intitule = badContentDetector.detectBadContent(a.getIntitule());
         String description = badContentDetector.detectBadContent(a.getDescription());
+
         a.setIntitule(intitule);
         a.setDescription(description);
 
@@ -47,7 +49,11 @@ public class RestauManagerImpl implements RestauManager {
     }
 
     @Override
-    @Transactional
+    public List<Article> getAllArticles() {
+        return (List<Article>) articleDAO.findAll();
+    }
+
+    @Override
     public List<Article> getArticlesWithMaxPrice(Double d) {
         List<Article> articles = getAllArticles();
         for (int i = articles.size() - 1; i >= 0; i--) {
@@ -60,15 +66,48 @@ public class RestauManagerImpl implements RestauManager {
     }
 
     @Override
-    public List<Article> getAllArticles() {
-        return (List<Article>) articleDAO.findAll();
+    public Article getArticleByIntitule(String i) {
+        List<Article> articles = getAllArticles();
+
+        for (Article article : articles) {
+            if (article.getIntitule().equals(i)) {
+                return article;
+            }
+        }
+        return null;
     }
+
+    @Override
+    public Article getArticleById(Long id) {
+        Optional<Article> article = articleDAO.findById(id);
+        return article.orElse(null);
+    }
+
+    // -------------------
+    // Méthodes pour Carte
+    // -------------------
 
     @Override
     @Transactional
     public void addCarte(Carte c) {
         carteDAO.save(c);
         System.out.println("Enregistré | " + c);
+    }
+
+    @Override
+    public List<Carte> getAllCartes() {
+        return (List<Carte>) carteDAO.findAll();
+    }
+
+    @Override
+    public Carte getCarteByType(Type type) {
+        List<Carte> cartes = getAllCartes();
+        for (Carte carte : cartes) {
+            if (carte.getType() == type) {
+                return carte;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -106,37 +145,12 @@ public class RestauManagerImpl implements RestauManager {
         // Save the updated carte
         carteDAO.save(c);
         articleDAO.save(a);
-        System.out.println(c.getTitre() + " updated + 1 article");
+        System.out.println("Mis à jour | " + c.getTitre() + " : 1 Article ajouté");
     }
 
-    @Override
-    @Transactional
-    public List<Article> getArticlesFromCarte(Carte c) {
-        return c.getArticles();
-    }
-
-    @Override
-    public Carte getCarteByType(Type type) {
-        List<Carte> cartes = getAllCartes();
-        for (Carte carte : cartes) {
-            if (carte.getType() == type) {
-                return carte;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Article getArticleByIntitule(String i) {
-        List<Article> articles = getAllArticles();
-
-        for (Article article : articles) {
-            if (article.getIntitule().equals(i)) {
-                return article;
-            }
-        }
-        return null;
-    }
+    // -----------------------
+    // Méthodes pour Commande
+    // -----------------------
 
     @Override
     @Transactional
@@ -158,10 +172,6 @@ public class RestauManagerImpl implements RestauManager {
 
         // Save the Commande object to the database
         commandeDAO.save(c);
-    }
-
-    public List<Carte> getAllCartes() {
-        return (List<Carte>) carteDAO.findAll();
     }
 
 }
