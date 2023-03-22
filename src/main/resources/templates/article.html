@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des articles</title>
+</head>
+<body>
+<h1>List des Articles</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Intitule</th>
+        <th>Description</th>
+        <th>Prix</th>
+        <th>Carte</th>
+        <th>Type</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="form : ${articleForms}">
+        <td th:text="${form.id}"></td>
+        <td th:text="${form.intitule}"></td>
+        <td th:text="${form.description}"></td>
+        <td th:text="${form.prix}"></td>
+        <td th:text="${form.carteId}"></td>
+        <td th:text="${form.type}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
