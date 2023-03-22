@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class RestauManagerImpl implements RestauManager {
+public class RestauServiceImpl implements RestauService {
 
     @Autowired
     ArticleDAO articleDAO;

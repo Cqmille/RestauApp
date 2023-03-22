@@ -8,7 +8,7 @@ import com.restauapp.bo.Type;
 import java.util.Date;
 import java.util.List;
 
-public interface RestauManager {
+public interface RestauService {
 
     // Article
     void addArticle(Article a) throws BllException;
