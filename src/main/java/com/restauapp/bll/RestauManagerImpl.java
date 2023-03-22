@@ -49,6 +49,16 @@ public class RestauManagerImpl implements RestauManager {
     }
 
     @Override
+    public void updateArticle(Article a) throws BllException {
+
+    }
+
+    @Override
+    public void deleteArticle(Long id) throws BllException {
+
+    }
+
+    @Override
     public List<Article> getAllArticles() {
         return (List<Article>) articleDAO.findAll();
     }
@@ -95,6 +105,16 @@ public class RestauManagerImpl implements RestauManager {
     }
 
     @Override
+    public void updateCarte(Carte a) throws BllException {
+
+    }
+
+    @Override
+    public void deleteCarte(Long id) throws BllException {
+
+    }
+
+    @Override
     public List<Carte> getAllCartes() {
         return (List<Carte>) carteDAO.findAll();
     }
@@ -107,6 +127,11 @@ public class RestauManagerImpl implements RestauManager {
                 return carte;
             }
         }
+        return null;
+    }
+
+    @Override
+    public Carte getCarteById(Long id) {
         return null;
     }
 
@@ -148,6 +173,11 @@ public class RestauManagerImpl implements RestauManager {
         System.out.println("Mis à jour | " + c.getTitre() + " : 1 Article ajouté");
     }
 
+    @Override
+    public void removeArticleFromCarte(Article a, Carte c) throws BllException {
+
+    }
+
     // -----------------------
     // Méthodes pour Commande
     // -----------------------
@@ -172,6 +202,41 @@ public class RestauManagerImpl implements RestauManager {
 
         // Save the Commande object to the database
         commandeDAO.save(c);
+    }
+
+    @Override
+    public void updateCommande(Commande c) throws BllException {
+
+    }
+
+    @Override
+    public void deleteCommande(Long id) throws BllException {
+
+    }
+
+    @Override
+    public List<Commande> getAllCommandes() {
+        return null;
+    }
+
+    @Override
+    public Commande getCommandeById(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<Commande> getCommandesByTable(int numTable) {
+        return null;
+    }
+
+    @Override
+    public List<Commande> getCommandesByDate(Date date) {
+        return null;
+    }
+
+    @Override
+    public double getTotalMontant(Commande c) {
+        return 0;
     }
 
 }
