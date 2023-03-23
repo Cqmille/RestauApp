@@ -30,39 +30,41 @@
         </tbody>
     </table>
 
-<!--    <div class="my-4">-->
-<!--        <h2>Ajouter un nouvel article</h2>-->
-<!--        <form method="post" th:action="@{/article}" th:object="${article}">-->
-<!--            <div class="form-group">-->
-<!--                <label for="intitule">Intitule:</label>-->
-<!--                <input type="text" class="form-control" id="intitule" th:field="*{intitule}" required>-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label for="description">Description:</label>-->
-<!--                <input type="text" class="form-control" id="description" th:field="*{description}" required>-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label for="prix">Prix:</label>-->
-<!--                <input type="number" class="form-control" id="prix" th:field="*{prix}" required>-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label for="carte">Carte:</label>-->
-<!--                <select class="form-control" id="carte" th:field="*{carte}" required>-->
-<!--                    <option th:each="carte : ${cartes}" th:value="${carte}" th:text="${carte.titre}"></option>-->
-<!--                </select>-->
-<!--            </div>-->
-<!--            <button type="submit" class="btn btn-primary">Ajouter</button>-->
-<!--        </form>-->
+    <div class="my-4">
+        <h2>Ajouter un nouvel article</h2>
+        <form method="post" th:action="@{/article}" th:object="${article}">
+            <div class="form-group">
+                <label for="intitule">Intitule:</label>
+                <input type="text" class="form-control" id="intitule" th:field="*{intitule}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <input type="text" class="form-control" id="description" th:field="*{description}" required>
+            </div>
+            <div class="form-group">
+                <label for="prix">Prix:</label>
+                <input type="number" class="form-control" id="prix" th:field="*{prix}" required>
+            </div>
+            <div class="form-group">
+                <label for="carte">Carte:</label>
+                <select class="form-control" id="carte" th:field="*{carte}" required>
+                    <option th:each="carte : ${cartes}" th:value="${carte.id}" th:text="${carte.titre}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+        </form>
 <!--        <div th:if="${#fields.hasErrors()}">-->
 <!--            <p class="text-danger">Erreurs:</p>-->
 <!--            <ul>-->
-<!--                <li th:each="err : ${#fields.errors()}">-->
+<!--                <li th:each="err : ${#fields.errors('article.*')}">-->
 <!--                    <span th:text="${err}"></span>-->
 <!--                </li>-->
 <!--            </ul>-->
 <!--        </div>-->
-<!--    </div>-->
+    </div>
 </div>
 </body>
+
+
 
 </html>

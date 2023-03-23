@@ -3,6 +3,7 @@ package com.restauapp.ihm;
 import com.restauapp.bll.BllException;
 import com.restauapp.bll.RestauService;
 import com.restauapp.bo.Article;
+import com.restauapp.bo.Carte;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -22,10 +23,26 @@ public class ArticleController {
     RestauService service;
 
     @GetMapping("/article")
-    public String list(Model model) {
+    //public String list(Model model, @ModelAttribute("article") Article article) {
+    public String list(Model model, Article article) {
         List<Article> articles = service.getAllArticles();
+        List<Carte> cartes = service.getAllCartes();
         model.addAttribute("articles", articles);
+        model.addAttribute("cartes", cartes);
         return "article";
+    }
+
+    @PostMapping("/article")
+    public String addArticle(@Valid @ModelAttribute("article") Article article, BindingResult result, Model model) throws BllException {
+        if (result.hasErrors()) {
+            List<Article> articles = service.getAllArticles();
+            List<Carte> cartes = service.getAllCartes();
+            model.addAttribute("articles", articles);
+            model.addAttribute("cartes", cartes);
+            return "article";
+        }
+        service.addArticle(article);
+        return "redirect:/article"; // n'appelle pas l'html mais l'url
     }
 
     @GetMapping("/delete/{id}")
@@ -40,16 +57,21 @@ public class ArticleController {
         return "redirect:/article";
     }
 
-    @PostMapping("/article")
-    public String addArticle(@ModelAttribute("article") Article article, BindingResult result, Model model) {
-        try {
-            service.addArticle(article);
-        } catch (BllException e) {
-            model.addAttribute("cartes", service.getAllCartes());
-            model.addAttribute("errorMessage", e.getMessage());
-            return "add-article";
-        }
-        return "redirect:/article";
-    }
+//    @PostMapping("/article")
+//    public String addArticle(@Valid @ModelAttribute("article") Article article, BindingResult result, Model model) {
+//        if(result.hasErrors()){
+//            model.addAttribute("cartes", service.getAllCartes());
+//            return "article";
+//        }
+//        try {
+//            service.addArticle(article);
+//        } catch (BllException e) {
+//            List<Carte> cartes = service.getAllCartes();
+//            model.addAttribute("cartes", cartes);
+//            model.addAttribute("errorMessage", e.getMessage());
+//            return "article";
+//        }
+//        return "redirect:/article";
+//    }
 
 }

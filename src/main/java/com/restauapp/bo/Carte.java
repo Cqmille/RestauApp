@@ -36,9 +36,6 @@ public class Carte {
         return "Carte{" +
                 "id=" + id +
                 ", titre='" + titre + '\'' +
-                ", descriptif='" + descriptif + '\'' +
-                ", type=" + type +
-                ", articles=" + articles +
                 '}';
     }
 

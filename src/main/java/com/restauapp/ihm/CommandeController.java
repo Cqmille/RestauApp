@@ -27,5 +27,4 @@ public class CommandeController {
     // commande.dateCommande, commande.numCommande, commande.id, commande.numTable
     // Also, show all articles of each command
     // each="article : ${commande.articles}" th:text="${article.intitule}"
-    // Use bootstrap
 }
