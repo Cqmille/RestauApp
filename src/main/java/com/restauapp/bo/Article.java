@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "article_type")
 @Data
-public abstract class Article {
+public class Article {
 
     @Id
     @GeneratedValue
@@ -24,13 +24,10 @@ public abstract class Article {
     private double prix;
 
     @ManyToOne
-    //@JoinColumn(name = "carte_id")
     private Carte carte;
 
-    public Long getIdArticle() {
-        return this.id;
-    }
-    public double getPrix() {return this.prix; }
+    @Enumerated(EnumType.STRING)
+    private ArticleType type;
 
     @Override
     public String toString() {
@@ -40,6 +37,8 @@ public abstract class Article {
                 ", description='" + description + '\'' +
                 ", prix=" + prix +
                 ", carte=" + carte +
+                ", type=" + type +
                 '}';
     }
 }
+

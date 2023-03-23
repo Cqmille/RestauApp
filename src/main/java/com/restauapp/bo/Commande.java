@@ -1,6 +1,8 @@
 package com.restauapp.bo;
 
 import jakarta.persistence.*;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +23,7 @@ public class Commande {
     @Column(name = "date_commande")
     private Date dateCommande;
 
-    @Column(name = "num_commande")
+    @Column(name = "num_commande", unique = true)
     private String numCommande;
 
     @Column(name = "num_table")
@@ -37,4 +39,5 @@ public class Commande {
 
     @Column(name = "montant_total")
     private double montantTotal;
+
 }

@@ -1,32 +1,48 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Liste des articles</title>
+    <title>Liste des commandes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </head>
 <body>
-<h1>List des Articles</h1>
-
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Date</th>
-        <th>Numero de commande</th>
-        <th>Numero de table</th>
-
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="commande : ${commandes}">
-            <td th:text="${commande.id}"></td>
-            <td th:text="${commande.dateCommande}"></td>
-            <td th:text="${commande.num_commande}"></td>
-            <td th:text="${commande.num_table}"></td>
-            <td th:text="${commande.commande_article}"></td>
-
-
-    </tr>
-    </tbody>
-</table>
+<div class="container">
+    <h1 class="my-4">Liste des Commandes</h1>
+    <div th:each="commande : ${commandes}" class="my-4">
+        <h2>Commande #<span th:text="${commande.numCommande}"></span></h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Numéro Commande</th>
+                <th>ID</th>
+                <th>Numéro Table</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${commande.dateCommande}"></td>
+                <td th:text="${commande.numCommande}"></td>
+                <td th:text="${commande.id}"></td>
+                <td th:text="${commande.numTable}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <h3> <span th:text="${#lists.size(commande.articles)}"></span> Articles</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Intitulé</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="article : ${commande.articles}">
+                <td th:text="${article.intitule}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
 </html>

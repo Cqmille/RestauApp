@@ -30,7 +30,7 @@ public interface RestauService {
     void removeArticleFromCarte(Article a, Carte c) throws BllException;
 
     // Commande
-    void addCommande(List<Article> articles, int numTable) throws BllException;
+    void addCommande(List<Article> articles, String numTable) throws BllException;
     void updateCommande(Commande c) throws BllException;
     void deleteCommande(Long id) throws BllException;
     List<Commande> getAllCommandes();

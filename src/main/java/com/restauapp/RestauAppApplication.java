@@ -10,6 +10,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -27,27 +29,27 @@ public class RestauAppApplication implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
         // Création de nouveaux articles
-        PlatPrincipal poulet = new PlatPrincipal();
+        Article poulet = new Article();
         poulet.setIntitule("Poulet rôti");
         poulet.setDescription("Poulet rôti avec légumes et sauce au choix");
         poulet.setPrix(12.99);
 
-        Boisson coca = new Boisson();
+        Article coca = new Article();
         coca.setIntitule("Coca");
         coca.setDescription("Du coca");
         coca.setPrix(1.99);
 
-        Entree carottesRapees = new Entree();
+        Article carottesRapees = new Article();
         carottesRapees.setIntitule("Carottes râpées");
         carottesRapees.setDescription("Carottes râpées avec vinaigrette");
         carottesRapees.setPrix(5.99);
 
-        Dessert ileFlotante = new Dessert();
+        Article ileFlotante = new Article();
         ileFlotante.setIntitule("Île flottante");
         ileFlotante.setDescription("Un dessert à base de blancs d'oeufs et de caramel");
         ileFlotante.setPrix(6.99);
 
-        PlatPrincipal rizAuBeurre = new PlatPrincipal();
+        Article rizAuBeurre = new Article();
         rizAuBeurre.setIntitule("Riz au beurre");
         rizAuBeurre.setDescription("Du riz cuit avec du beurre");
         rizAuBeurre.setPrix(8.99);
@@ -78,16 +80,25 @@ public class RestauAppApplication implements CommandLineRunner {
         // Récupération de tous les Articles
         List<Article> articles = service.getAllArticles();
 
-        // Associer les articles aux différentes cartes
-        for(Article article: articles) {
-            if(article instanceof PlatPrincipal || article instanceof Boisson) {
-                service.addArticleToCarte(article, carteMain);
-            } else if(article instanceof Entree) {
-                service.addArticleToCarte(article, carteMain);
-            } else if(article instanceof Dessert) {
-                service.addArticleToCarte(article, carteDessert);
-            }
-        }
+        // Ajouter les articles aux cartes
+        service.addArticleToCarte(poulet, carteMain);
+        service.addArticleToCarte(coca, carteMain);
+        service.addArticleToCarte(ileFlotante, carteDessert);
+        service.addArticleToCarte(carottesRapees, carteMain);
+        service.addArticleToCarte(rizAuBeurre, carteMain);
+
+        // Creer une commande
+        Commande commande = new Commande();
+        commande.setDateCommande(new Date());commande.setNumCommande("25");
+        commande.setNumTable("3");
+
+        List<Article> articlesCommande = new ArrayList<Article>();
+        articlesCommande.add(poulet);
+        articlesCommande.add(coca);
+
+        // Enregistrer la commande
+        service.addCommande(articlesCommande, commande.getNumTable());
+
     }
 
 }

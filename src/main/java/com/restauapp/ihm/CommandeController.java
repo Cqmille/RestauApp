@@ -17,8 +17,15 @@ public class CommandeController {
 
     @GetMapping("/commande")
     public String getAll(Model model) {
-        List<Commande> actions = service.getAllCommandes();
-        model.addAttribute("actions", actions);
+        List<Commande> commandes = service.getAllCommandes();
+        model.addAttribute("commandes", commandes);
         return "commande";
     }
+
+    // Create commande.html
+    // Displays all commands. 1 table = 1 command
+    // commande.dateCommande, commande.numCommande, commande.id, commande.numTable
+    // Also, show all articles of each command
+    // each="article : ${commande.articles}" th:text="${article.intitule}"
+    // Use bootstrap
 }

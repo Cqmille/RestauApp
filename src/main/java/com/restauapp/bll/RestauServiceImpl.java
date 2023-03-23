@@ -55,7 +55,7 @@ public class RestauServiceImpl implements RestauService {
 
     @Override
     public void deleteArticle(Long id) throws BllException {
-
+        articleDAO.deleteById(id);
     }
 
     @Override
@@ -184,24 +184,30 @@ public class RestauServiceImpl implements RestauService {
 
     @Override
     @Transactional
-    public void addCommande(List<Article> articlesRandom, int numTable) throws BllException {
+    public void addCommande(List<Article> articles, String numTable) throws BllException {
         Commande c = new Commande();
 
         // Fill in the information for the Commande object
         c.setDateCommande(new Date());
-        c.setNumCommande(UUID.randomUUID().toString());
-        c.setNumTable(Integer.toString(numTable));
-        c.setArticles(articlesRandom);
+        c.setNumTable(numTable);
+        c.setArticles(articles);
+
+        // Traitement numCommande
+        String uuid = UUID.randomUUID().toString();
+        String numCommande = uuid.substring(0, 8);
+        c.setNumCommande(numCommande);
 
         // Calculate the total price of the articles
         double total = 0;
-        for (Article a : articlesRandom) {
+        for (Article a : articles) {
             total += a.getPrix();
         }
         c.setMontantTotal(total);
 
         // Save the Commande object to the database
         commandeDAO.save(c);
+
+        System.out.println("Mis à jour | Commande " + c.getId() + " enregistrée");
     }
 
     @Override
@@ -216,7 +222,7 @@ public class RestauServiceImpl implements RestauService {
 
     @Override
     public List<Commande> getAllCommandes() {
-        return null;
+        return (List<Commande>) commandeDAO.findAll();
     }
 
     @Override
